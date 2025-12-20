@@ -57,11 +57,51 @@ export function beregnFlyData(fly: PlaneData): CalculatedData {
   // Finn hvor MAC starter (avstand fra vingens fremkant inne ved kroppen)
   const macLE = (rotKorde - mac) / 6 + (sweep * 0.5) // Forbedret sweep-justering
 
-  // --- STEG C: Beregn anbefalt CG (tyngdepunkt) ---
-  // Trygg start (Beginner): 25% av MAC
-  // Aggressiv (Expert): 33% av MAC
-  const cgFremre = macLE + (mac * 0.25)
-  const cgBakre = macLE + (mac * 0.33)
+  // --- STEG C: Beregn anbefalt CG med hensyn til halen ---
+  let cgFremre: number
+  let cgBakre: number
+
+  // Sjekk om vi har nok data til å beregne med hale-påvirkning
+  if (haleAreal > 0 && avstandVingeHale > 0 && vingeAreal > 0) {
+    // Avansert metode: Beregn nøytralpunkt (NP) basert på Tail Volume Coefficient
+    
+    // Tail Volume Coefficient (Vbar)
+    // Vbar = (haleAreal * avstandVingeHale) / (vingeAreal * mac)
+    const tailVolume = (haleAreal * avstandVingeHale) / (vingeAreal * mac)
+    
+    // Estimer nøytralpunkt som prosent av MAC
+    // For konvensjonelle fly er NP typisk rundt 25% + (tailVolume * 15-20%)
+    // Dette er en forenklet tilnærming basert på empiriske data
+    const npPercent = 0.25 + (tailVolume * 0.18)
+    
+    // Beregn nøytralpunkt posisjon
+    const neutralPoint = macLE + (mac * npPercent)
+    
+    // CG skal være foran nøytralpunktet for stabilitet
+    // Static Margin: 5-10% for stabile fly, 10-15% for veldig stabile trenere
+    const staticMarginMin = 0.05  // 5% for sportsfly
+    const staticMarginMax = 0.12  // 12% for stabile trenere
+    
+    // Beregn CG-område basert på static margin
+    cgFremre = neutralPoint - (mac * staticMarginMax) // Mer stabilt (12% margin)
+    cgBakre = neutralPoint - (mac * staticMarginMin)  // Mer agilt (5% margin)
+    
+    // Sørg for at CG ikke går bak 35% MAC (sikkerhet)
+    const maxCG = macLE + (mac * 0.35)
+    if (cgBakre > maxCG) {
+      cgBakre = maxCG
+    }
+    
+    // Sørg for at CG ikke går foran 15% MAC (for langt frem)
+    const minCG = macLE + (mac * 0.15)
+    if (cgFremre < minCG) {
+      cgFremre = minCG
+    }
+  } else {
+    // Enkel metode hvis hale-data mangler: bruk standard 25-33% MAC
+    cgFremre = macLE + (mac * 0.25) // 25% MAC (Veldig stabilt)
+    cgBakre = macLE + (mac * 0.33)  // 33% MAC (Nøytralt/Acro)
+  }
 
   return {
     vingeAreal: parseFloat(vingeAreal.toFixed(0)),
@@ -72,7 +112,9 @@ export function beregnFlyData(fly: PlaneData): CalculatedData {
       fra: parseFloat(cgFremre.toFixed(1)),
       til: parseFloat(cgBakre.toFixed(1))
     },
-    beskjed: "Mål dette fra der vingen starter (fremkant) inne ved kroppen."
+    beskjed: haleAreal > 0 && avstandVingeHale > 0
+      ? "Beregnet med hale-påvirkning. Mål fra vingens fremkant ved kroppen."
+      : "Forenklet beregning (25-33% MAC). Legg inn hale-målinger for mer nøyaktig CG."
   }
 }
 

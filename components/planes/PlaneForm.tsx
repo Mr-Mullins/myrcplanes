@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import { supabase } from '@/lib/supabaseClient'
 import { usePlaneCalculations } from '@/hooks/usePlaneCalculations'
+import InfoTooltip from '@/components/ui/InfoTooltip'
 import type { RCPlane, PlaneFormData } from '@/lib/types'
 
 interface PlaneFormProps {
@@ -192,55 +193,71 @@ export default function PlaneForm({ plane, onSuccess, onCancel }: PlaneFormProps
         {/* Aerodynamic Measurements */}
         <div>
           <h3 className="text-lg font-semibold text-gray-900 mb-4">
-            Aerodynamiske målinger
-            <span className="text-sm font-normal text-gray-500 ml-2">(i cm)</span>
+            Aerodynamiske målinger - Vinge
+            <span className="text-sm font-normal text-gray-500 ml-2">(alle mål i cm)</span>
           </h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Vingespenn
+              <label className="block text-sm font-medium text-gray-700 mb-1 flex items-center">
+                Vingespenn (spiss til spiss)
+                <InfoTooltip 
+                  title="Vingespenn"
+                  description="Mål avstanden fra vingetuppen på den ene siden til vingetuppen på den andre siden. Dette er den totale bredden av flyet målt over vingene."
+                />
               </label>
               <input
                 type="number"
                 step="0.1"
                 value={formData.vingespenn}
                 onChange={(e) => handleChange('vingespenn', e.target.value)}
-                placeholder="F.eks. 48"
+                placeholder="F.eks. 150 cm"
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Rot korde
+              <label className="block text-sm font-medium text-gray-700 mb-1 flex items-center">
+                Rot korde (ved kroppen)
+                <InfoTooltip 
+                  title="Rot korde"
+                  description="Mål avstanden fra vingens fremkant til bakkant der vingen møter kroppen (ved roten). Dette er vingens bredde inne ved kroppen."
+                />
               </label>
               <input
                 type="number"
                 step="0.1"
                 value={formData.rot_korde}
                 onChange={(e) => handleChange('rot_korde', e.target.value)}
-                placeholder="F.eks. 9"
+                placeholder="F.eks. 18 cm"
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Tipp korde
+              <label className="block text-sm font-medium text-gray-700 mb-1 flex items-center">
+                Tipp korde (ved vingespiss)
+                <InfoTooltip 
+                  title="Tipp korde"
+                  description="Mål avstanden fra vingens fremkant til bakkant ved vingetippen (ytterst på vingen). Dette er vingens bredde ved spissen."
+                />
               </label>
               <input
                 type="number"
                 step="0.1"
                 value={formData.tipp_korde}
                 onChange={(e) => handleChange('tipp_korde', e.target.value)}
-                placeholder="F.eks. 8.8"
+                placeholder="F.eks. 12 cm"
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Sweep
+              <label className="block text-sm font-medium text-gray-700 mb-1 flex items-center">
+                Sweep (tilbakesveip)
+                <InfoTooltip 
+                  title="Sweep"
+                  description="Mål hvor mye vingens fremkant er sveipt bakover. Hvis vingen er rett (ikke sveipt), sett dette til 0. Måles som avstanden mellom vingens fremkant ved roten og ved tippen."
+                />
               </label>
               <input
                 type="number"
@@ -251,59 +268,84 @@ export default function PlaneForm({ plane, onSuccess, onCancel }: PlaneFormProps
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               />
             </div>
+          </div>
+        </div>
 
+        {/* Tail Measurements */}
+        <div>
+          <h3 className="text-lg font-semibold text-gray-900 mb-4">
+            Aerodynamiske målinger - Hale
+            <span className="text-sm font-normal text-gray-500 ml-2">(valgfritt, men anbefalt)</span>
+          </h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Hale spenn
+              <label className="block text-sm font-medium text-gray-700 mb-1 flex items-center">
+                Hale spenn (spiss til spiss)
+                <InfoTooltip 
+                  title="Hale spenn"
+                  description="Mål halens totale bredde fra spiss til spiss (høyreroret), akkurat som vingespenn men for halen. Dette er avstanden fra den ene siden av haleplanet til den andre."
+                />
               </label>
               <input
                 type="number"
                 step="0.1"
                 value={formData.hale_spenn}
                 onChange={(e) => handleChange('hale_spenn', e.target.value)}
-                placeholder="F.eks. 20"
+                placeholder="F.eks. 50 cm"
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Hale rot korde
+              <label className="block text-sm font-medium text-gray-700 mb-1 flex items-center">
+                Hale rot korde (ved kroppen)
+                <InfoTooltip 
+                  title="Hale rot korde"
+                  description="Mål halens bredde (fra fremkant til bakkant) der den møter kroppen/halefinnen. Dette er den bredeste delen av halen."
+                />
               </label>
               <input
                 type="number"
                 step="0.1"
                 value={formData.hale_rot_korde}
                 onChange={(e) => handleChange('hale_rot_korde', e.target.value)}
-                placeholder="F.eks. 6"
+                placeholder="F.eks. 12 cm"
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Hale tipp korde
+              <label className="block text-sm font-medium text-gray-700 mb-1 flex items-center">
+                Hale tipp korde (ved spiss)
+                <InfoTooltip 
+                  title="Hale tipp korde"
+                  description="Mål halens bredde (fra fremkant til bakkant) ved spissen. Hvis halen er firkantet (lik bredde overalt), kan du la dette feltet stå tomt."
+                />
               </label>
               <input
                 type="number"
                 step="0.1"
                 value={formData.hale_tipp_korde}
                 onChange={(e) => handleChange('hale_tipp_korde', e.target.value)}
-                placeholder="Samme som rot hvis firkantet"
+                placeholder="La stå tom hvis firkantet"
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Avstand vinge-hale
+              <label className="block text-sm font-medium text-gray-700 mb-1 flex items-center">
+                Avstand vinge til hale
+                <InfoTooltip 
+                  title="Avstand vinge-hale"
+                  description="Mål avstanden fra der vingen starter (ved kroppen) til der halen starter. Dette er lengden på kroppen mellom vinge og hale."
+                />
               </label>
               <input
                 type="number"
                 step="0.1"
                 value={formData.avstand_vinge_hale}
                 onChange={(e) => handleChange('avstand_vinge_hale', e.target.value)}
-                placeholder="F.eks. 26"
+                placeholder="F.eks. 80 cm"
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               />
             </div>

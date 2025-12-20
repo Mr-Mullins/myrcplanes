@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { usePlaneCalculations } from '@/hooks/usePlaneCalculations'
+import InfoTooltip from '@/components/ui/InfoTooltip'
 
 export default function Calculator() {
   const [measurements, setMeasurements] = useState({
@@ -48,7 +49,7 @@ export default function Calculator() {
       {/* Input Section */}
       <div className="bg-white rounded-lg shadow p-6">
         <div className="flex justify-between items-center mb-6">
-          <h2 className="text-xl font-semibold text-gray-900">Målinger</h2>
+          <h2 className="text-xl font-semibold text-gray-900">Målinger (alle mål i cm)</h2>
           <button
             onClick={handleReset}
             className="text-sm text-gray-600 hover:text-gray-800"
@@ -57,117 +58,159 @@ export default function Calculator() {
           </button>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Vingespenn (cm) *
-            </label>
-            <input
-              type="number"
-              step="0.1"
-              value={measurements.vingespenn}
-              onChange={(e) => handleChange('vingespenn', e.target.value)}
-              placeholder="F.eks. 48"
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-            />
-          </div>
+        {/* Wing Measurements */}
+        <div className="mb-6">
+          <h3 className="text-sm font-semibold text-gray-700 mb-3 uppercase tracking-wide">Vinge *</h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1 flex items-center">
+                Vingespenn (spiss til spiss) *
+                <InfoTooltip 
+                  title="Vingespenn"
+                  description="Mål avstanden fra vingetuppen på den ene siden til vingetuppen på den andre siden. Dette er den totale bredden av flyet målt over vingene."
+                />
+              </label>
+              <input
+                type="number"
+                step="0.1"
+                value={measurements.vingespenn}
+                onChange={(e) => handleChange('vingespenn', e.target.value)}
+                placeholder="F.eks. 150"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              />
+            </div>
 
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Rot korde (cm) *
-            </label>
-            <input
-              type="number"
-              step="0.1"
-              value={measurements.rotKorde}
-              onChange={(e) => handleChange('rotKorde', e.target.value)}
-              placeholder="F.eks. 9"
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-            />
-          </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1 flex items-center">
+                Rot korde (ved kroppen) *
+                <InfoTooltip 
+                  title="Rot korde"
+                  description="Mål avstanden fra vingens fremkant til bakkant der vingen møter kroppen (ved roten). Dette er vingens bredde inne ved kroppen."
+                />
+              </label>
+              <input
+                type="number"
+                step="0.1"
+                value={measurements.rotKorde}
+                onChange={(e) => handleChange('rotKorde', e.target.value)}
+                placeholder="F.eks. 18"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              />
+            </div>
 
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Tipp korde (cm) *
-            </label>
-            <input
-              type="number"
-              step="0.1"
-              value={measurements.tippKorde}
-              onChange={(e) => handleChange('tippKorde', e.target.value)}
-              placeholder="F.eks. 8.8"
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-            />
-          </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1 flex items-center">
+                Tipp korde (ved vingespiss) *
+                <InfoTooltip 
+                  title="Tipp korde"
+                  description="Mål avstanden fra vingens fremkant til bakkant ved vingetippen (ytterst på vingen). Dette er vingens bredde ved spissen."
+                />
+              </label>
+              <input
+                type="number"
+                step="0.1"
+                value={measurements.tippKorde}
+                onChange={(e) => handleChange('tippKorde', e.target.value)}
+                placeholder="F.eks. 12"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              />
+            </div>
 
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Sweep (cm)
-            </label>
-            <input
-              type="number"
-              step="0.1"
-              value={measurements.sweep}
-              onChange={(e) => handleChange('sweep', e.target.value)}
-              placeholder="0 for rette vinger"
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-            />
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1 flex items-center">
+                Sweep (tilbakesveip)
+                <InfoTooltip 
+                  title="Sweep"
+                  description="Mål hvor mye vingens fremkant er sveipt bakover. Hvis vingen er rett (ikke sveipt), sett dette til 0. Måles som avstanden mellom vingens fremkant ved roten og ved tippen."
+                />
+              </label>
+              <input
+                type="number"
+                step="0.1"
+                value={measurements.sweep}
+                onChange={(e) => handleChange('sweep', e.target.value)}
+                placeholder="0 for rette vinger"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              />
+            </div>
           </div>
+        </div>
 
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Hale spenn (cm)
-            </label>
-            <input
-              type="number"
-              step="0.1"
-              value={measurements.haleSpenn}
-              onChange={(e) => handleChange('haleSpenn', e.target.value)}
-              placeholder="F.eks. 20"
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-            />
-          </div>
+        {/* Tail Measurements */}
+        <div>
+          <h3 className="text-sm font-semibold text-gray-700 mb-3 uppercase tracking-wide">Hale (valgfritt)</h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1 flex items-center">
+                Hale spenn (spiss til spiss)
+                <InfoTooltip 
+                  title="Hale spenn"
+                  description="Mål halens totale bredde fra spiss til spiss (høyreroret), akkurat som vingespenn men for halen. Dette er avstanden fra den ene siden av haleplanet til den andre."
+                />
+              </label>
+              <input
+                type="number"
+                step="0.1"
+                value={measurements.haleSpenn}
+                onChange={(e) => handleChange('haleSpenn', e.target.value)}
+                placeholder="F.eks. 50"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              />
+            </div>
 
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Hale rot korde (cm)
-            </label>
-            <input
-              type="number"
-              step="0.1"
-              value={measurements.haleRotKorde}
-              onChange={(e) => handleChange('haleRotKorde', e.target.value)}
-              placeholder="F.eks. 6"
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-            />
-          </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1 flex items-center">
+                Hale rot korde (ved kroppen)
+                <InfoTooltip 
+                  title="Hale rot korde"
+                  description="Mål halens bredde (fra fremkant til bakkant) der den møter kroppen/halefinnen. Dette er den bredeste delen av halen."
+                />
+              </label>
+              <input
+                type="number"
+                step="0.1"
+                value={measurements.haleRotKorde}
+                onChange={(e) => handleChange('haleRotKorde', e.target.value)}
+                placeholder="F.eks. 12"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              />
+            </div>
 
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Hale tipp korde (cm)
-            </label>
-            <input
-              type="number"
-              step="0.1"
-              value={measurements.haleTippKorde}
-              onChange={(e) => handleChange('haleTippKorde', e.target.value)}
-              placeholder="Samme som rot hvis firkantet"
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-            />
-          </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1 flex items-center">
+                Hale tipp korde (ved spiss)
+                <InfoTooltip 
+                  title="Hale tipp korde"
+                  description="Mål halens bredde (fra fremkant til bakkant) ved spissen. Hvis halen er firkantet (lik bredde overalt), kan du la dette feltet stå tomt."
+                />
+              </label>
+              <input
+                type="number"
+                step="0.1"
+                value={measurements.haleTippKorde}
+                onChange={(e) => handleChange('haleTippKorde', e.target.value)}
+                placeholder="La stå tom hvis firkantet"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              />
+            </div>
 
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Avstand vinge-hale (cm)
-            </label>
-            <input
-              type="number"
-              step="0.1"
-              value={measurements.avstandVingeHale}
-              onChange={(e) => handleChange('avstandVingeHale', e.target.value)}
-              placeholder="F.eks. 26"
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-            />
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1 flex items-center">
+                Avstand vinge til hale
+                <InfoTooltip 
+                  title="Avstand vinge-hale"
+                  description="Mål avstanden fra der vingen starter (ved kroppen) til der halen starter. Dette er lengden på kroppen mellom vinge og hale."
+                />
+              </label>
+              <input
+                type="number"
+                step="0.1"
+                value={measurements.avstandVingeHale}
+                onChange={(e) => handleChange('avstandVingeHale', e.target.value)}
+                placeholder="F.eks. 80"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              />
+            </div>
           </div>
         </div>
       </div>

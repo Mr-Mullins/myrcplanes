@@ -140,3 +140,4 @@ npm run dev
 - [Supabase Auth Documentation](https://supabase.com/docs/guides/auth)
 - [Supabase Storage Documentation](https://supabase.com/docs/guides/storage)
 
+
