@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import { supabase } from '@/lib/supabaseClient'
 import Calculator from '@/components/calculator/Calculator'
+import Header from '@/components/layout/Header'
 import type { Session } from '@supabase/supabase-js'
 import { useRouter } from 'next/navigation'
 
@@ -26,11 +27,6 @@ export default function CalculatorPage() {
     return () => subscription.unsubscribe()
   }, [])
 
-  const handleSignOut = async () => {
-    await supabase.auth.signOut()
-    router.push('/')
-  }
-
   if (loading) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
@@ -47,30 +43,7 @@ export default function CalculatorPage() {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
-      <header className="bg-white shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-          <div className="flex justify-between items-center">
-            <div>
-              <h1 className="text-3xl font-bold text-gray-900">RC Fly Kalkulator</h1>
-              <p className="text-gray-600 mt-1">Beregn aerodynamiske data</p>
-            </div>
-            <div className="flex items-center gap-4">
-              <button
-                onClick={() => router.push('/')}
-                className="px-4 py-2 text-gray-700 hover:text-gray-900 font-medium"
-              >
-                Mine fly
-              </button>
-              <button
-                onClick={handleSignOut}
-                className="px-4 py-2 text-gray-700 hover:text-gray-900 font-medium"
-              >
-                Logg ut
-              </button>
-            </div>
-          </div>
-        </div>
-      </header>
+      <Header session={session} />
 
       {/* Main Content */}
       <main className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
