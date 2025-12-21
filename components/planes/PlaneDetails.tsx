@@ -422,7 +422,10 @@ export default function PlaneDetails({
         {plane.notes && (
           <div>
             <h3 className="text-sm font-medium text-gray-500 mb-2">Notater</h3>
-            <p className="text-gray-900 whitespace-pre-wrap">{plane.notes}</p>
+            <div 
+              className="text-gray-900 prose prose-sm max-w-none"
+              dangerouslySetInnerHTML={{ __html: plane.notes }}
+            />
           </div>
         )}
 
