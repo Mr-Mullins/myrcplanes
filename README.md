@@ -4,10 +4,20 @@ En webapplikasjon for å administrere og beregne aerodynamiske data for RC-fly. 
 
 ## Funksjoner
 
-- **Brukerautentisering** - Sikker innlogging og registrering via Supabase Auth
+- **Brukerautentisering** 
+  - Sikker innlogging og registrering via Supabase Auth
+  - Glemt passord-funksjonalitet med e-post tilbakestilling
+- **Brukerprofil**
+  - Administrer personlig informasjon (fornavn, etternavn)
+  - Last opp og endre profilbilde
+  - Endre passord med validering av nåværende passord
+  - Synlig brukerinfo i header med dropdown-meny
 - **Fly-administrasjon** - Legg til, rediger, vis og slett RC-fly
-- **Aerodynamiske beregninger** - Automatisk beregning av MAC, vingeareal og anbefalt CG
-- **Bildeadministrasjon** - Last opp inntil 5 bilder per fly med thumbnail-funksjonalitet
+- **Aerodynamiske beregninger** - Automatisk beregning av MAC, vingeareal, haleareal og anbefalt CG
+- **Bildeadministrasjon** 
+  - Last opp inntil 5 bilder per fly med thumbnail-funksjonalitet
+  - Fullskjerm bildekarusell for visning av bilder
+  - Sett hvilket bilde som skal være thumbnail
 - **Standalone kalkulator** - Rask kalkulator for aerodynamiske beregninger uten lagring
 - **Responsivt design** - Fungerer på desktop, tablet og mobil
 
@@ -44,6 +54,8 @@ Gå til Supabase Dashboard → SQL Editor og kjør følgende migrations i rekkef
 
 1. `supabase/migrations/001_initial_schema.sql` - Oppretter tabeller og RLS policies
 2. `supabase/migrations/002_storage_setup.sql` - Setter opp storage bucket for bilder
+3. `supabase/migrations/003_update_hale_fields.sql` - Oppdaterer hale-feltene for mer detaljerte målinger
+4. `supabase/migrations/004_add_avatar_to_profile.sql` - Legger til profilbilde-støtte
 
 ### 4. Aktiver Email Auth
 
@@ -65,22 +77,28 @@ npm run dev
 myrcplanes/
 ├── app/
 │   ├── page.tsx              # Hovedside med flyliste
+│   ├── profile/
+│   │   └── page.tsx          # Brukerprofilside
 │   ├── calculator/
 │   │   └── page.tsx          # Standalone kalkulator
 │   ├── layout.tsx            # Root layout
 │   └── globals.css           # Global styling
 ├── components/
 │   ├── auth/
-│   │   ├── LoginForm.tsx     # Innloggingsskjema
+│   │   ├── LoginForm.tsx     # Innloggingsskjema med glemt passord
 │   │   └── SignUpForm.tsx    # Registreringsskjema
+│   ├── layout/
+│   │   └── Header.tsx        # Header med brukerinfo og dropdown
 │   ├── planes/
 │   │   ├── PlaneList.tsx     # Liste over fly
 │   │   ├── PlaneForm.tsx     # Legg til/rediger fly
 │   │   ├── PlaneDetails.tsx  # Detaljvisning
 │   │   ├── ImageUpload.tsx   # Bildeopplasting
-│   │   └── ImageGallery.tsx  # Bildegalleri
-│   └── calculator/
-│       └── Calculator.tsx    # Kalkulator-komponent
+│   │   └── ImageGallery.tsx  # Bildegalleri med karusell
+│   ├── calculator/
+│   │   └── Calculator.tsx    # Kalkulator-komponent
+│   └── ui/
+│       └── InfoTooltip.tsx   # Tooltip for forklaringer
 ├── lib/
 │   ├── supabaseClient.ts     # Supabase klient
 │   ├── planeCalculations.ts  # Aerodynamiske beregninger

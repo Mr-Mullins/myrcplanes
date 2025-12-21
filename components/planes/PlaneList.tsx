@@ -7,9 +7,10 @@ import type { RCPlane } from '@/lib/types'
 interface PlaneListProps {
   onAddPlane: () => void
   onSelectPlane: (plane: RCPlane) => void
+  onPlanesLoaded: (planes: RCPlane[]) => void
 }
 
-export default function PlaneList({ onAddPlane, onSelectPlane }: PlaneListProps) {
+export default function PlaneList({ onAddPlane, onSelectPlane, onPlanesLoaded }: PlaneListProps) {
   const [planes, setPlanes] = useState<RCPlane[]>([])
   const [loading, setLoading] = useState(true)
   const [searchQuery, setSearchQuery] = useState('')
@@ -42,8 +43,10 @@ export default function PlaneList({ onAddPlane, onSelectPlane }: PlaneListProps)
         }))
 
         setPlanes(planesWithImages)
+        onPlanesLoaded(planesWithImages)
       } else {
         setPlanes(planesData || [])
+        onPlanesLoaded(planesData || [])
       }
     } catch (error) {
       console.error('Error fetching planes:', error)

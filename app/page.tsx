@@ -7,6 +7,7 @@ import SignUpForm from '@/components/auth/SignUpForm'
 import PlaneList from '@/components/planes/PlaneList'
 import PlaneForm from '@/components/planes/PlaneForm'
 import PlaneDetails from '@/components/planes/PlaneDetails'
+import Header from '@/components/layout/Header'
 import type { Session } from '@supabase/supabase-js'
 
 export default function Home() {
@@ -15,6 +16,7 @@ export default function Home() {
   const [loading, setLoading] = useState(true)
   const [view, setView] = useState<'list' | 'form' | 'details'>('list')
   const [selectedPlane, setSelectedPlane] = useState<any>(null)
+  const [allPlanes, setAllPlanes] = useState<any[]>([])
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
@@ -31,10 +33,6 @@ export default function Home() {
     return () => subscription.unsubscribe()
   }, [])
 
-  const handleSignOut = async () => {
-    await supabase.auth.signOut()
-    setSession(null)
-  }
 
   if (loading) {
     return (
@@ -93,33 +91,36 @@ export default function Home() {
     setSelectedPlane(null)
   }
 
+  const handlePlanesLoaded = (planes: any[]) => {
+    setAllPlanes(planes)
+  }
+
+  const handleNextPlane = () => {
+    if (!selectedPlane || allPlanes.length === 0) return
+    const currentIndex = allPlanes.findIndex(p => p.id === selectedPlane.id)
+    if (currentIndex < allPlanes.length - 1) {
+      setSelectedPlane(allPlanes[currentIndex + 1])
+    }
+  }
+
+  const handlePrevPlane = () => {
+    if (!selectedPlane || allPlanes.length === 0) return
+    const currentIndex = allPlanes.findIndex(p => p.id === selectedPlane.id)
+    if (currentIndex > 0) {
+      setSelectedPlane(allPlanes[currentIndex - 1])
+    }
+  }
+
+  const getCurrentPlaneIndex = () => {
+    if (!selectedPlane || allPlanes.length === 0) return { current: 0, total: 0 }
+    const currentIndex = allPlanes.findIndex(p => p.id === selectedPlane.id)
+    return { current: currentIndex + 1, total: allPlanes.length }
+  }
+
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
-      <header className="bg-white shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-          <div className="flex justify-between items-center">
-            <div>
-              <h1 className="text-3xl font-bold text-gray-900">My RC Planes</h1>
-              <p className="text-gray-600 mt-1">Oversikt over fly</p>
-            </div>
-            <div className="flex items-center gap-4">
-              <a
-                href="/calculator"
-                className="px-4 py-2 text-gray-700 hover:text-gray-900 font-medium"
-              >
-                Kalkulator
-              </a>
-              <button
-                onClick={handleSignOut}
-                className="px-4 py-2 text-gray-700 hover:text-gray-900 font-medium"
-              >
-                Logg ut
-              </button>
-            </div>
-          </div>
-        </div>
-      </header>
+      <Header session={session} />
 
       {/* Main Content */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -128,6 +129,7 @@ export default function Home() {
             <PlaneList 
               onAddPlane={handleAddPlane}
               onSelectPlane={handleSelectPlane}
+              onPlanesLoaded={handlePlanesLoaded}
             />
           </div>
         )}
@@ -146,6 +148,9 @@ export default function Home() {
             onEdit={handleEditPlane}
             onClose={handleDetailsClose}
             onDeleted={handlePlaneDeleted}
+            onNextPlane={handleNextPlane}
+            onPrevPlane={handlePrevPlane}
+            planeIndex={getCurrentPlaneIndex()}
           />
         )}
       </main>
