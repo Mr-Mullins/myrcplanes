@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import { supabase } from '@/lib/supabaseClient'
 import { usePlaneCalculations } from '@/hooks/usePlaneCalculations'
 import InfoTooltip from '@/components/ui/InfoTooltip'
+import RichTextEditor from '@/components/ui/RichTextEditor'
 import type { RCPlane, PlaneFormData } from '@/lib/types'
 
 interface PlaneFormProps {
@@ -386,15 +387,13 @@ export default function PlaneForm({ plane, onSuccess, onCancel }: PlaneFormProps
 
         {/* Notes */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
+          <label className="block text-sm font-medium text-gray-700 mb-2">
             Notater
           </label>
-          <textarea
+          <RichTextEditor
             value={formData.notes}
-            onChange={(e) => handleChange('notes', e.target.value)}
-            rows={4}
-            placeholder="Eventuelle notater om flyet..."
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            onChange={(value) => handleChange('notes', value)}
+            placeholder="Skriv eventuelle notater om flyet her..."
           />
         </div>
 
