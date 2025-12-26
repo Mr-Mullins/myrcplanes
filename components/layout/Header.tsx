@@ -129,6 +129,12 @@ export default function Header({ session }: HeaderProps) {
             >
               Kalkulator
             </button>
+            <button
+              onClick={() => router.push('/locations')}
+              className="text-gray-700 hover:text-blue-600 font-medium transition"
+            >
+              Sikker flyving
+            </button>
           </nav>
 
           {/* User Menu */}
@@ -209,6 +215,20 @@ export default function Header({ session }: HeaderProps) {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
                   </svg>
                   Kalkulator
+                </button>
+
+                <button
+                  onClick={() => {
+                    router.push('/locations')
+                    setShowDropdown(false)
+                  }}
+                  className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 flex items-center gap-3 md:hidden"
+                >
+                  <svg className="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                  </svg>
+                  Sikker flyving
                 </button>
 
                 <div className="border-t border-gray-200 mt-2 pt-2">
