@@ -54,3 +54,56 @@ export interface PlaneFormData {
   notes: string
 }
 
+// ============================================
+// FLYING LOCATIONS TYPES
+// ============================================
+
+export interface FlyingLocation {
+  id: number
+  user_id: string
+  name: string
+  description?: string
+  latitude: number
+  longitude: number
+  last_checked_at?: string
+  last_status?: 'GRØNN' | 'RØD'
+  nearest_airport_name?: string
+  nearest_airport_distance?: number
+  in_nature_reserve?: boolean
+  nature_reserve_name?: string
+  notes?: string
+  created_at: string
+  updated_at: string
+}
+
+export interface Airport {
+  name: string
+  code: string
+  latitude: number
+  longitude: number
+  type?: 'primary' | 'regional' | 'private'
+}
+
+export interface SafetyCheckResult {
+  status: 'GRØNN' | 'RØD'
+  nearestAirport: {
+    name: string
+    code: string
+    distance: number // in kilometers
+  }
+  natureReserve?: {
+    isProtected: boolean
+    name?: string
+    geometry?: any // GeoJSON geometry from Geonorge API
+  }
+  warnings: string[]
+  error?: string
+}
+
+export interface NatureReserveCheckResult {
+  isProtected: boolean
+  reserveName?: string
+  geometry?: any // GeoJSON geometry from Geonorge API
+  error?: string
+}
+
