@@ -22,3 +22,7 @@ COMMENT ON COLUMN rc_planes.hale_tipp_korde IS 'Halens tippkorde i cm (valgfri, 
 COMMENT ON COLUMN rc_planes.hale_areal IS 'Beregnet haleareal i cm² (calculated value)';
 
 
+
+
+
+

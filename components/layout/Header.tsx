@@ -76,62 +76,36 @@ export default function Header({ session }: HeaderProps) {
     <header className="bg-white shadow-sm sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
         <div className="flex justify-between items-center">
-          <div className="flex items-center gap-3">
+          <button
+            onClick={() => router.push('/')}
+            className="flex items-center gap-3 hover:opacity-80 transition cursor-pointer"
+          >
             {/* RC Plane Logo */}
-            <svg className="h-12 w-12" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-              {/* Main fuselage */}
-              <ellipse cx="50" cy="50" rx="8" ry="25" fill="#3B82F6" />
-              
-              {/* Cockpit window */}
-              <circle cx="50" cy="40" r="4" fill="#60A5FA" />
-              
-              {/* Main wings */}
-              <ellipse cx="50" cy="50" rx="45" ry="8" fill="#2563EB" />
-              <ellipse cx="50" cy="50" rx="45" ry="6" fill="#3B82F6" />
-              
-              {/* Wing tips (ailerons) */}
-              <rect x="8" y="48" width="8" height="4" rx="1" fill="#1E40AF" />
-              <rect x="84" y="48" width="8" height="4" rx="1" fill="#1E40AF" />
-              
-              {/* Tail wing */}
-              <ellipse cx="50" cy="70" rx="18" ry="4" fill="#2563EB" />
-              
-              {/* Vertical stabilizer */}
-              <path d="M50 65 L50 75 L56 72 Z" fill="#1E40AF" />
-              
-              {/* Propeller */}
-              <ellipse cx="50" cy="28" rx="2" ry="8" fill="#6B7280" opacity="0.6" />
-              <ellipse cx="50" cy="28" rx="8" ry="2" fill="#6B7280" opacity="0.6" />
-              
-              {/* Nose cone */}
-              <circle cx="50" cy="25" r="3" fill="#60A5FA" />
-              
-              {/* Landing gear */}
-              <line x1="45" y1="60" x2="45" y2="68" stroke="#374151" strokeWidth="1.5" />
-              <line x1="55" y1="60" x2="55" y2="68" stroke="#374151" strokeWidth="1.5" />
-              <circle cx="45" cy="68" r="2" fill="#1F2937" />
-              <circle cx="55" cy="68" r="2" fill="#1F2937" />
-            </svg>
+            <img
+              src="/logorc.png"
+              alt="RC-fly logo"
+              className="h-12 w-auto"
+            />
             <h1 className="text-2xl font-bold text-gray-900 hidden sm:block">Mine RC-fly</h1>
-          </div>
+          </button>
 
           {/* Navigation */}
           <nav className="hidden md:flex items-center gap-6">
             <button
               onClick={() => router.push('/')}
-              className="text-gray-700 hover:text-blue-600 font-medium transition"
+              className="text-gray-700 hover:text-blue-600 font-medium transition cursor-pointer"
             >
               Mine fly
             </button>
             <button
               onClick={() => router.push('/calculator')}
-              className="text-gray-700 hover:text-blue-600 font-medium transition"
+              className="text-gray-700 hover:text-blue-600 font-medium transition cursor-pointer"
             >
               Kalkulator
             </button>
             <button
               onClick={() => router.push('/locations')}
-              className="text-gray-700 hover:text-blue-600 font-medium transition"
+              className="text-gray-700 hover:text-blue-600 font-medium transition cursor-pointer"
             >
               Sikker flyving
             </button>
