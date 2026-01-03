@@ -213,3 +213,7 @@ CREATE INDEX idx_plane_images_plane_id ON plane_images(plane_id);
 CREATE INDEX idx_plane_images_thumbnail ON plane_images(plane_id, is_thumbnail) WHERE is_thumbnail = true;
 
 
+
+
+
+

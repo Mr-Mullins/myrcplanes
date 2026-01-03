@@ -120,7 +120,7 @@ export default function SavedLocationsList({
               {/* Location info */}
               <button
                 onClick={() => onSelectLocation(location)}
-                className="flex-1 text-left min-w-0"
+                className="flex-1 text-left min-w-0 cursor-pointer"
               >
                 <div className="flex items-start gap-2">
                   <svg
